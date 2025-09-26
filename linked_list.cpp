@@ -41,9 +41,7 @@ int lengthOfLL(Node* head) {
         cntr++;
     }
     return cntr;
-}
-
-Node* 
+} 
 
 int main() {
     vector<int> arr = {3453,34,3234,253,345,56,46,757};
