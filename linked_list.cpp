@@ -4,14 +4,14 @@ using namespace std;
 class Node {
     public:
     int data;
-    Node* nxt;
-    
+    Node *nxt;
+
     public:
     Node(int data_ip, Node* nxt_ip) {
         data = data_ip;
         nxt = nxt_ip;
     }
-    
+
     public:
     Node(int data_ip) {
         data = data_ip;
@@ -23,12 +23,11 @@ Node* convertStr2LL(vector<int> &arr) {
     Node* head = new Node(arr[0]);
     Node* mover = head;
 
-    for (int i=0; i<arr.size(); i++) {
+    for(int i = 0; i < arr.size(); i++) {
         Node* temp = new Node(arr[i]);
         mover->nxt = temp;
         mover = temp;
     }
-
     return head;
 }
 
@@ -37,27 +36,24 @@ int lengthOfLL(Node* head) {
     Node* temp = head;
 
     while(temp) {
-        temp = temp->nxt;
         cntr++;
+        temp = temp->nxt;
     }
     return cntr;
-} 
+}
 
 int main() {
-    vector<int> arr = {3453,34,3234,253,345,56,46,757};
-    
+    vector<int> arr = {12,35,365,2,3,3435,6,7,34,2,36};
     Node* head = convertStr2LL(arr);
-
     Node* temp = head;
+
     while(temp) {
-        cout << temp->data << " ";
+        cout << temp->data << " " << endl;
         temp = temp->nxt;
     }
-
     cout << endl;
 
-    int size = lengthOfLL(head);
-    cout << size << endl;
+    cout << "Length of LL : " << lengthOfLL(head) << endl;
 
     return 0;
 }
