@@ -1,1 +1,3 @@
-6
+Iterative Preorder: 1 2 4 5 3 6 
+Iterative Inorder: 4 2 5 1 3 6 
+Iterative Postorder: 4 5 2 6 3 1 
