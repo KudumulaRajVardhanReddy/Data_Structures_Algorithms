@@ -58,8 +58,7 @@ public:
             return;
         }
         Node* temp = head;
-        while (temp->next && temp->next->power != power)
-            temp = temp->next;
+        while (temp->next && temp->next->power != power) temp = temp->next;
         if (!temp->next) return;
         Node* del = temp->next;
         temp->next = del->next;

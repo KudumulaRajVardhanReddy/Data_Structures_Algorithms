@@ -33,8 +33,7 @@ public:
             table[index] = newNode;
         else {
             Node* temp = table[index];
-            while (temp->next != nullptr)
-                temp = temp->next;
+            while (temp->next) temp = temp->next;
             temp->next = newNode;
         }
     }

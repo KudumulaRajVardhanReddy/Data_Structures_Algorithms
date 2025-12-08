@@ -40,7 +40,7 @@ class HashTable {
         int index{hashFunction(key)};
         int start{index};
 
-        while(table[index] == EMPTY) {
+        while(table[index] != EMPTY) {
             if (table[index] == key) {
                 table[index] = DELETED;
                 count--;

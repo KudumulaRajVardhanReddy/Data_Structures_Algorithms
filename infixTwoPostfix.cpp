@@ -41,10 +41,11 @@ string infixToPostfix(string exp) {
         else if (c == ')') {
             while (!s.isEmpty() && s.peek() != '(') result += s.pop();
             if (!s.isEmpty() && s.peek() == '(') s.pop();
-        } else if (isOperator(c)) {
-            while (!s.isEmpty() && isOperator(s.peek()) && 
-            ((precedence(c) < precedence(s.peek())) ||
-            (precedence(c) == precedence(s.peek()) && !isRightPrecedence(c)))) result += s.pop();
+        }
+        else if (isOperator(c)) {
+            if (!s.isEmpty() && isOperator(s.peek()) && 
+            precedence(c) < precedence(s.peek()) ||
+            (precedence(c) == precedence(s.peek())) && !isRightPrecedence(s.peek())) result += s.pop();
             s.push(c);
         }
     }

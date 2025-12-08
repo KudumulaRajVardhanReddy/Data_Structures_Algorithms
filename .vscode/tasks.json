@@ -5,10 +5,14 @@
       "label": "compile and run",
       "type": "shell",
       "command": "cmd.exe",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
       "args": [
         "/c",
-        "g++ -std=c++17 -o \"${fileBasenameNoExtension}\" \"${file}\" && .\\${fileBasenameNoExtension} < input.txt > output.txt"
+        "g++ -std=c++17 \"${file}\" -o \"${fileBasenameNoExtension}.exe\" && \"${fileBasenameNoExtension}.exe\" < input.txt > output.txt"
       ],
+      "problemMatcher": [],
       "group": {
         "kind": "build",
         "isDefault": true

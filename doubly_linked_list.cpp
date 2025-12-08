@@ -117,9 +117,7 @@ Node* insertBeforeKthPosn(Node* head, int val, int k) {
     Node* temp = head; int count{0};
     while(temp && count < k) {
         count++;
-        if (count == k) {
-            break;
-        }
+        if (count == k) break;
         temp = temp->next;
     }
     Node* newNode = new Node(val, temp, temp->back);
