@@ -22,8 +22,6 @@ void bs(int arr[], int sz) {
         disp(arr, sz);
 }
 
-
-
 void ss(int arr[], int sz) {
         for (int i = 0; i < sz - 1; i++) {
                 int min = i;
@@ -31,7 +29,6 @@ void ss(int arr[], int sz) {
                         if (arr[min] > arr[j]) min = j;
                 }
                 swap(arr[i], arr[min]);
-
         }
         disp(arr, sz);
 }
@@ -56,6 +53,8 @@ void merge(int arr[], int l, int m, int r) {
 
         while (i <= m) temp[k++] = arr[i++];
         while (j <= r) temp[k++] = arr[j++];
+
+        for (int t = 0; t < k; t++) arr[l + t] = temp[t];
 }
 
 void ms(int arr[], int l, int r) {
@@ -121,10 +120,10 @@ int main() {
         //bs(arr, sz);
         //ss(arr, sz);
         //is(arr, sz);
-        //ms(arr, 0, sz-1);
+        ms(arr, 0, sz-1);
         //qs(arr, 0, sz-1);
-        buildHeap(arr, sz, sz/2-1);
-        heapSort(arr, sz);
+        //buildHeap(arr, sz, sz/2-1);
+        //heapSort(arr, sz);
         disp(arr, sz);
         return 0;
 }
