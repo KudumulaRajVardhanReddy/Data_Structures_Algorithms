@@ -1,161 +1,189 @@
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
 
 class Node {
-    public:
-    int data;
-    Node* next, * back;
+        public:
+        int val;
+        Node* prev,* next;
 
-    public:
-    Node(int data,  Node* next, Node* back) {
-        this->data = data;
-        this->next = next;
-        this->back = back;
-    }
-
-    public:
-    Node(int data) {
-        this->data = data;
-        next = nullptr;
-        back = nullptr;
-    }
-    public:
-    Node(int data, Node* next) {
-        this->data = data;
-        this->next = next;
-        this->back = nullptr;
-    }
+        Node(int val) {
+                this->val = val;
+                prev = next = nullptr;
+        }
 };
 
-Node* convertArr2DLL(vector<int> &arr) {
-    Node* head = new Node(arr[0]);
-    Node* prev = head;
+class DLL {
+        public:
+        Node* head, * tail;
 
-    for (int i = 1; i < arr.size(); i++) {
-        Node* temp = new Node(arr[i], nullptr, prev);
-        prev->next = temp;
-        prev = temp;
-    }
-    return head;
-}
+        DLL() {
+                head = tail = nullptr;
+        }
 
-Node* beheadDLL(Node* head) {
-    if (head == nullptr) return nullptr;
-    Node* temp = head;
-    head = head->next;
-    if (head!= nullptr) head->back = nullptr;
-    temp->next = nullptr;
-    delete temp;
+        bool isEmpty() { return head == nullptr; }
 
-    return head;
-}
+        void insertHead(int val) {
+                if (isEmpty()) {
+                        Node* newNode = new Node(val);
+                        head = tail = newNode;
+                        return;
+                }
+                Node* temp = head;
+                Node* newNode = new Node(val);
+                newNode->next = head;
+                head->prev = newNode;
+                head = newNode;
+        }
 
-Node* cutTheTail(Node* head) {
-    if (head == nullptr) return nullptr;
-    if(head->next == nullptr) {
-        delete head;
-        return nullptr;
-    }
-    Node* temp = head;
-    while(temp->next) temp = temp->next;
-    Node* tail = temp;
-    temp = temp->back;
-    temp->next = nullptr;
-    tail->back = nullptr;
-    delete(tail);
+        void insertTail(int val) {
+                if (isEmpty()) {
+                        Node* newNode = new Node(val);
+                        head = tail = newNode;
+                        return;
+                }
+                Node* newNode = new Node(val);
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+        }
 
-    return head;
-}
+        void insertAtKthPosition(int K, int val) {
+                if (isEmpty()) return;
+                Node* temp = head; int count = 1;
+                while (temp && count < K-1) {
+                        temp = temp->next;
+                }
+                if (temp == tail) {
+                        insertTail(val);
+                        return;
+                }
+                Node* newNode = new Node(val);
+                newNode->next = temp->next;
+                newNode->prev = temp;
+                temp->next->prev = newNode;
+                temp->next = newNode;
+        }
 
-Node* deleteKthElement(Node* head, int k) {
-    Node* temp = head, * prev, * front;
-    int cntr{0};
-    if (head == nullptr) return head;
-    while(temp) {
-        cntr++;
-        if (cntr == k) break;
-        temp = temp->next;
-    }
-    prev = temp->back;
-    front = temp->next;
-    if (prev == nullptr && front == nullptr) {
-        delete temp;
-        return nullptr;
-    }
-    if (prev == nullptr) return beheadDLL(head);
-    if (front == nullptr) return cutTheTail(head);
-    front->back = prev;
-    prev->next = front;
-    temp->back = nullptr;
-    temp->next = nullptr;
-    delete temp;
+        void removeHead() {
+                if (isEmpty()) return;
+                Node* temp = head;
+                if (head == tail) {
+                        head = tail = nullptr;
+                        delete temp;
+                        return;
+                }
+                head = head->next;
+                head->prev = temp;
+                delete temp;
+        }
 
-    return head;
-}
+        void removeTail() {
+                if (isEmpty()) return;
+                Node* temp = tail;
+                if (head == tail) {
+                        head = tail = nullptr;
+                        delete temp;
+                        return;
+                }
+                tail = tail->prev;
+                delete temp;
+        }
 
-Node* insertNewHead(Node* head, int value) {
-    Node* newHead = new Node(value, head);
-    head->back = newHead;
-    return newHead;
-}
+        void removeByValue(int val) {
+                if (isEmpty()) return;
+                if (head->val == val) {
+                        removeHead();
+                        return;
+                }
+                if (tail->val == val) {
+                        removeTail();
+                        return;
+                }
+                Node* temp = head;
+                while (temp && temp->val != val) {
+                        temp = temp->next;
+                }
+                temp->prev->next = temp->next;
+                temp->next->prev = temp->prev;
+                delete temp;
+        }
 
-Node* insertNewTail(Node* head, int value) {
-    if (head == nullptr) return head;
-    Node* temp = head;
-    while(temp->next) {
-        temp = temp->next;
-    }
-    Node* newTail = new Node(value, nullptr, temp);
-    temp->next = newTail;
+        void removeKthNode(int K) {
+                if (isEmpty()) return;
+                if (K == 1) {
+                        removeHead();
+                        return;
+                }
+                int count = 1; Node* temp;
+                while (temp && count < K) {
+                        temp = temp->next;
+                }
+                if (temp == tail) {
+                        removeTail();
+                        return;
+                }
+                temp->prev->next = temp->next;
+                temp->next->prev = temp->prev;
+                delete temp;
+        }
 
-    return head;
-}
+        void display() {
+                Node* temp = head;
+                while (temp) {
+                        cout << temp->val << " <-> ";
+                        temp = temp->next;
+                }
+                cout << " NULL \n";
+        }
 
-Node* insertBeforeKthPosn(Node* head, int val, int k) {
-    if (head == nullptr) return head;
-    if (k == 1) return insertNewHead(head, val);
-    Node* temp = head; int count{0};
-    while(temp && count < k) {
-        count++;
-        if (count == k) break;
-        temp = temp->next;
-    }
-    Node* newNode = new Node(val, temp, temp->back);
-    temp->back->next = newNode;
-    temp->back = newNode;
+        void display_reverse() {
+                Node* temp = tail;
+                while (temp) {
+                        cout << temp->val << " <-> ";
+                        temp = temp->prev;
+                }
+                cout << " NULL \n";
+        }
 
-    return head;
-}
-
-void print(Node* head) {
-    while(head) {
-        cout << head->data << endl;
-        head = head->next;
-    }
-}
+        void deleteList() {
+                if (isEmpty()) return;
+                Node* temp = head;
+                while (temp) {
+                        Node* del = temp;
+                        temp = temp->next;
+                        delete del;
+                }
+                head = tail = nullptr;
+        }
+        void countNodes() {
+                if (isEmpty()) return;
+                if (head == tail) {
+                        cout << "No. of Nodes = 1\n";
+                        return;
+                }
+                Node* temp = head;
+                int count = 0;
+                while (temp) {
+                        temp = temp->next;
+                        count++;
+                }
+                cout << "No. of Nodes = " << count << "\n";
+        }
+};
 
 int main() {
-     vector<int> arr = {1, 2, 3, 4, 5, 6};
-     Node* head = convertArr2DLL(arr);
+        DLL dll;
+        dll.insertHead(32);
+        dll.insertHead(34);
+        dll.display();
+        dll.countNodes();
+        dll.insertAtKthPosition(2, 76);
+        dll.removeHead();
+        dll.insertAtKthPosition(2, 78);
+        dll.display();
+        dll.insertAtKthPosition(2, 24);
+        dll.display();
+        dll.countNodes();
 
-     print(head);
-     cout << endl;
-     head = beheadDLL(head);
-     print(head);
-     cout << endl;
-     head = cutTheTail(head);
-     print(head);
-     cout << endl;
-     head = deleteKthElement(head, 3);
-     print(head);
-     cout << endl;
-     head = insertNewHead(head, 1);
-     print(head);
-     cout << endl;
-     head = insertNewTail(head, 6);
-     print(head);
-     cout << endl;
-     head = insertBeforeKthPosn(head, 4, 3);
-     print(head);
-     cout << endl;
+        return 0;
 }
