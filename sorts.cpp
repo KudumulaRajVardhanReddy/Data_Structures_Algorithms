@@ -11,13 +11,17 @@ void merge(int arr[], int l, int m, int r);
 void ms(int arr[], int l, int r);
 void heapify(int arr[], int n, int i);
 void buildHeap(int arr[], int n, int i);
+void heapSortRec(int arr[], int n);
 void heapSort(int arr[], int n);
 
 void bs(int arr[], int sz) {
+        bool swapped = false;
         for (int i = 0; i < sz; i++) {
-                for (int j = 0; j < sz - 1; j++) {
+                for (int j = 0; j < sz - i - 1; j++) {
                         if (arr[j] > arr[j+1]) swap(arr[j], arr[j+1]);
+                        swapped = true;
                 }
+                if (!swapped) break;
         }
         disp(arr, sz);
 }
@@ -28,7 +32,7 @@ void ss(int arr[], int sz) {
                 for (int j = i+1; j < sz; j++) {
                         if (arr[min] > arr[j]) min = j;
                 }
-                swap(arr[i], arr[min]);
+                if (min != i) swap(arr[i], arr[min]);
         }
         disp(arr, sz);
 }
@@ -98,11 +102,16 @@ void buildHeap(int arr[], int n, int i) {
         buildHeap(arr, n, i-1);
 }
 
-void heapSort(int arr[], int n) {
+void heapSortRec(int arr[], int n) {
         if (n <= 1) return;
         swap(arr[0], arr[n-1]);
         heapify(arr, n-1, 0);
         heapSort(arr, n-1);
+}
+
+void heapSort(int arr[], int n) {
+        buildHeap(arr, n, n/2-1);
+        heapSortRec(arr, n);
 }
 
 void disp(int arr[], int sz) {
@@ -120,8 +129,8 @@ int main() {
         //bs(arr, sz);
         //ss(arr, sz);
         //is(arr, sz);
-        ms(arr, 0, sz-1);
-        //qs(arr, 0, sz-1);
+        //ms(arr, 0, sz-1);
+        qs(arr, 0, sz-1);
         //buildHeap(arr, sz, sz/2-1);
         //heapSort(arr, sz);
         disp(arr, sz);
