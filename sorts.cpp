@@ -106,7 +106,7 @@ void heapSortRec(int arr[], int n) {
         if (n <= 1) return;
         swap(arr[0], arr[n-1]);
         heapify(arr, n-1, 0);
-        heapSort(arr, n-1);
+        heapSortRec(arr, n-1);
 }
 
 void heapSort(int arr[], int n) {
